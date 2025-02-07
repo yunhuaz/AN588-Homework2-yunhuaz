@@ -1,0 +1,69 @@
+---
+title: "yunhuaz_Homework2"
+format: html
+editor: visual
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+What is the probability that she will hear more than 8 calls during any given sessions?
+
+```{r}
+#Mean number of calls
+l <- 15
+
+#Probability its greater than 8
+p_greater_than_8 <- 1 - dpois(8, lambda = l) 
+
+p_greater_than_8
+```
+
+What is the probability that she will hear no calls in a session?
+
+```{r}
+#Mean number of calls
+l <- 15
+
+#Probability of no calls
+p_no_calls <- dpois(0, lambda = l)
+
+p_no_calls
+```
+
+What is the probability she will hear exactly 3 calls in a session?
+
+```{r}
+#Mean number of calls
+l <- 15
+
+#Probabiltiy of exactly 3 calls
+p_3_calls <- dpois(3, lambda = l)
+
+p_3_calls
+```
+
+Plot the relevant Poisson mass function over the values in range 0 ≤ x ≤ 30.
+
+```{r}
+x <- 0:30
+l <- 15
+
+probset <- dpois(x = x, lambda = l)
+
+barplot(probset, names.arg = x, space = 0, xlab = "x", ylab = "Pr(x = x", main = "Probablity Mass Function")
+```
+
+Simulate 104 results from this distribution (i.e., 2 years of Saturday morning sessions. Plot the simulated results using hist() and use xlim() to set the horizontal limits to be from 0 to 30. How does your histogram compare to the shape of the probability mass function you plotted above?
+
+```{r}
+set.seed(1)
+sim_results <- rpois(n = 104, lambda = 15)
+
+hist(sim_results, breaks = 15, xlab = "Number of Calls", ylab = "Frequency", main = "Histogram of Simulated Poisson Results", xlim = c(0,30))
+```
+
+Specifying a seed when generating a random sample allows for the same "random" sample every time we run that cell. This ensures reproducibility in this code, I specified the seed to be one ensure that I receive the same sample of size 104 from a Poisson(15) distribution.
+
+The histogram I plotted for the simulated results displayed a bimodal shaped distribution, the probability mass function displayed a normal distribution. Overall, based on the tails if we were to generate more samples we are able to create a similar shape to the probability mass function.
