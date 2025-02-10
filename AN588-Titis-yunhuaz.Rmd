@@ -1,0 +1,85 @@
+---
+title: "yunhuaz_Titis"
+format: html
+editor: visual
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+## Favorite Titi Image
+
+![](Titi-monkeys-1.jpg)
+
+## What is the probability that she will hear more than 8 calls during any given sessions?
+
+```{r}
+#Mean number of calls
+l <- 15
+
+#Probability its greater than 8
+p_greater_than_8 <- 1 - ppois(8, lambda = l, lower.tail = TRUE) 
+
+p_greater_than_8
+```
+
+In this question, I used ppois() because we were trying to find the probability that it is greater than 8, since Poisson distribution is discrete we will be using the cumulative distribution function (CDF) to find probabilities for ranges of values. Since P($X \geq 8$) = 1 - P($X \leq 7$), by using the function ppois(k,lambda) it computes P($X \leq k$) which gives the cumulative probability up to *k.* Therefore to find P($X \geq 8$), we will subtract P($X \leq 7$) from 1. If we were to use ppois(8, lambda = 15), we will be calculating P($X \geq 8$), which would include probabilities up to 8, which is not what we are trying to solve.
+
+## What is the probability that she will hear no calls in a session?
+
+```{r}
+#Mean number of calls
+l <- 15
+
+#Probability of no calls
+p_no_calls <- dpois(0, lambda = l)
+
+p_no_calls
+```
+
+The dpois() function is used in this question since it helps us calculate the probability mass function (PMF) of the Poisson distribution, which gives the probability of exactly *k* occurrences for an event. Which in this event we are trying to find the probability for the exact number of times where they won't call.
+
+## What is the probability she will hear exactly 3 calls in a session?
+
+```{r}
+#Mean number of calls
+l <- 15
+
+#Probabiltiy of exactly 3 calls
+p_3_calls <- dpois(3, lambda = l)
+
+p_3_calls
+```
+
+Similarly, to last questions explanation we are trying to determine the probability for exact number of occurrences (*k*) which is 3. What is the probability that she will here exactly 3 calls, therefore we will be using the function dpois().
+
+## Plot the relevant Poisson mass function over the values in range 0 ≤ x ≤ 30.
+
+```{r}
+x <- 0:30
+l <- 15
+
+probset <- dpois(x = x, lambda = l)
+#Use Histogram
+barplot(probset, names.arg = x, space = 0, xlab = "x", ylab = "Pr(x = x", main = "Probablity Mass Function")
+```
+
+For this scenario, we will be using dpois() because we are trying to determine the probability of the given number of events occurring in a fixed interval, which dpois() will allow us to compute the probability of exactly *k* events happening for each *k* in the range $0 \leq X \leq 30$. We are also dealing with discrete
+
+## Simulate 104 results from this distribution (i.e., 2 years of Saturday morning sessions. Plot the simulated results using hist() and use xlim() to set the horizontal limits to be from 0 to 30. How does your histogram compare to the shape of the probability mass function you plotted above?
+
+```{r}
+set.seed(1)
+sim_results <- rpois(n = 104, lambda = 15)
+
+hist(sim_results, breaks = 15, xlab = "Number of Calls", ylab = "Frequency", main = "Histogram of Simulated Poisson Results", xlim = c(0,30))
+```
+
+Specifying a seed when generating a random sample allows for the same "random" sample every time we run that cell. This ensures reproducibility in this code, I specified the seed to be one ensure that I receive the same sample of size 104 from a Poisson(15) distribution. The histogram I plotted for the given seed displayed a bimodal shaped distribution, and the probability mass function exhibits a bell curve. Overall, based on the tails if we were to generate more samples we are able to create a similar shape to the probability mass function.
+
+## Issues
+
+Issues I ran into were trying to determine when it was appropriate to use a certain function (dpois(), ppois(), and rpois()). Overall, once I grasp the understanding of these functions I was able to implement them into my code which then assisted me in answering the questions.
+
+I also struggled in trying to use the prettydoc package with the theme since I was quarto instead of R markdown. As a solution I download the file as an Rmd file and try to knit it then.
