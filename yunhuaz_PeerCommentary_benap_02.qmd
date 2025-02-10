@@ -1,0 +1,83 @@
+---
+title: "yunhuaz_Homework2"
+format: html
+editor: visual
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+> BP: Gonna echoe Christian's comments regarding formatting and the use of Rmd instead of Qmd to make sure your the theme works properly.
+
+What is the probability that she will hear more than 8 calls during any given sessions?
+
+```{r}
+#Mean number of calls
+l <- 15
+
+#Probability its greater than 8
+p_greater_than_8 <- 1 - dpois(8, lambda = l) 
+
+p_greater_than_8
+```
+
+> BP: I might be wrong, but I think dpois only returns the probability of that exact value within the distribution (i.e. P(X = x)), so 1- dpois(8, 15) like you have here would be returning the probability of *any* value other than 8 rather than just those above 8. I think you need the cumulative probability function ppois for this instead. I just set the lower.tail = FALSE to make sure I was grabbing all the probabilities of numbers above 8.
+
+What is the probability that she will hear no calls in a session?
+
+```{r}
+#Mean number of calls
+l <- 15
+
+#Probability of no calls
+p_no_calls <- dpois(0, lambda = l)
+
+p_no_calls
+```
+
+> BP: Looks good! Though I think it'd be a good idea to comment your code a bit more just to make it easier to follow along with what you're doing.
+
+What is the probability she will hear exactly 3 calls in a session?
+
+```{r}
+#Mean number of calls
+l <- 15
+
+#Probabiltiy of exactly 3 calls
+p_3_calls <- dpois(3, lambda = l)
+
+p_3_calls
+```
+
+Plot the relevant Poisson mass function over the values in range 0 ≤ x ≤ 30.
+
+```{r}
+x <- 0:30
+l <- 15
+
+probset <- dpois(x = x, lambda = l)
+
+barplot(probset, names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Probablity Mass Function")
+```
+
+> BP: Not sure what's happening but I'm getting an error saying "Error in (function (filename = "Rplot%03d.png", width=480, height=480,: unable to start png() device"
+>
+> Not entirely sure what to make of that, but it might have something to do with the file path that I'm using for this cloned repo. Either way probably a good thing to check.
+
+Simulate 104 results from this distribution (i.e., 2 years of Saturday morning sessions. Plot the simulated results using hist() and use xlim() to set the horizontal limits to be from 0 to 30. How does your histogram compare to the shape of the probability mass function you plotted above?
+
+```{r}
+set.seed(1)
+sim_results <- rpois(n = 104, lambda = 15)
+
+hist(sim_results, breaks = 15, xlab = "Number of Calls", ylab = "Frequency", main = "Histogram of Simulated Poisson Results", xlim = c(0,30))
+```
+
+Specifying a seed when generating a random sample allows for the same "random" sample every time we run that cell. This ensures reproducibility in this code, I specified the seed to be one ensure that I receive the same sample of size 104 from a Poisson(15) distribution.
+
+The histogram I plotted for the simulated results displayed a bimodal shaped distribution, the probability mass function displayed a normal distribution. Overall, based on the tails if we were to generate more samples we are able to create a similar shape to the probability mass function.
+
+> BP: I like that you specify a seed for the random sample to ensure it's consistent across different times running the code chunk, that's something I should try to utilize in my own code for this problem. Interesting that your results ended up displaying a bimodal distribution, mine definitely had multiple discrete local peaks across the distribution but I'm not sure that I could call it truly bimodal, since the peaks and valleys I saw looked more like noise rather than a true representation of the distribution. (also for clarity's sake I'm not sure I'd describe the graph of the probability mass function as following a "normal" distribution since it's explicitly a poisson distribution and therefore not, strictly speaking, continuous, but that might just be a nitpick.)
+>
+> Great work! Just think you might want to consider commenting your code a bit more to make things a bit clearer.
